@@ -13,13 +13,14 @@ public  class CallReceiver extends IncomingCallReceiver {
     Context context;
 
     @Override
-    public void onCall(final Context context, String callerDetail){
+    public void onCall(final Context context, String callerDetail, String callerName){
         Toast.makeText(context,"Incoming call: " + callerDetail,Toast.LENGTH_LONG);
         this.context = context;
         final Intent intent = new Intent(context,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("phoneNumber",callerDetail);
+        intent.putExtra("name",callerName);
         new Handler().postDelayed(new Runnable()
         {
             @Override

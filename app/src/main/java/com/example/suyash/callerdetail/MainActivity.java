@@ -18,7 +18,7 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends Activity {
     TextView textView;
-    String callerDetail;
+    String callerDetail,callerName = "";
     Button button;
 
     @Override
@@ -44,7 +44,8 @@ public class MainActivity extends Activity {
 
 
         callerDetail = getIntent().getExtras().getString("phoneNumber");
-        textView.setText("Call: " + callerDetail);
+        callerName = getIntent().getExtras().getString("name");
+        textView.setText("Caller Details: \n\t" + callerName + "\n\t"  + callerDetail);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

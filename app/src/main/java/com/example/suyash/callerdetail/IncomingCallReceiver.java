@@ -3,6 +3,9 @@ package com.example.suyash.callerdetail;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
 /**
@@ -11,10 +14,12 @@ import android.telephony.TelephonyManager;
 
 public class IncomingCallReceiver extends BroadcastReceiver {
     String callerDetail;
+    String callername ;
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")){
             callerDetail = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+            callername = getContactName(callerDetail,context);
         }
         else
         {
@@ -23,14 +28,34 @@ public class IncomingCallReceiver extends BroadcastReceiver {
             if(state.equals(TelephonyManager.EXTRA_STATE_RINGING) || state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK))
             {
                 callerDetail = number;
-                onCall(context,callerDetail);
+                callername = getContactName(callerDetail,context);
+                onCall(context,callerDetail, callername);
 
             }
 
         }
     }
 
-    public void onCall(Context context, String callerDetail){}
+    public void onCall(Context context, String callerDetail, String callername){}
+
+    public String getContactName(final String phoneNumber, Context context)
+    {
+        Uri uri=Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
+
+        String contactName="";
+        Cursor cursor=context.getContentResolver().query(uri,projection,null,null,null);
+
+        if (cursor != null) {
+            if(cursor.moveToFirst()) {
+                contactName=cursor.getString(0);
+            }
+            cursor.close();
+        }
+
+        return contactName;
+    }
 }
 
 
