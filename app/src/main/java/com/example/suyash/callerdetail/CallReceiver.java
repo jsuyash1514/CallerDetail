@@ -16,7 +16,7 @@ public  class CallReceiver extends IncomingCallReceiver {
     Context context;
 
     @Override
-    public void onCall(final Context context, String callerDetail, String callerName, Bitmap callerPic){
+    public void onCall(final Context context, String callerDetail, String callerName){
         Toast.makeText(context,"Incoming call: " + callerDetail,Toast.LENGTH_LONG);
         this.context = context;
         final Intent intent = new Intent(context,DialogBox.class);
@@ -24,10 +24,6 @@ public  class CallReceiver extends IncomingCallReceiver {
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("phoneNumber",callerDetail);
         intent.putExtra("name",callerName);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        callerPic.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        intent.putExtra("image",byteArray);
         new Handler().postDelayed(new Runnable()
         {
             @Override

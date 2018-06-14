@@ -44,10 +44,6 @@ public class DialogBox extends AppCompatActivity {
 
         this.getWindow().setAttributes(layoutParams);
 
-        ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        byte[] byteArray = getIntent().getByteArrayExtra("image");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        imageView.setImageBitmap(bitmap);
 
         callerDetail = getIntent().getExtras().getString("phoneNumber");
         callerName = getIntent().getExtras().getString("name");
